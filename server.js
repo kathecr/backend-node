@@ -9,6 +9,7 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//--GESTION DE LAS PETICIONES
 app.get("/message", (req, res) => {
   console.log(req.headers);
   res.header({
@@ -34,6 +35,8 @@ app.delete("/message", (req, res) => {
     response.success(req, res, "Eliminado correctamente");
   }
 });
+
+app.use("/app", express.static("public"));
 
 app.listen(port, () =>
   console.log("La aplicación est escuchando en http://localhost:3000")
