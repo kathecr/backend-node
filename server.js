@@ -1,10 +1,10 @@
 const express = require("express");
 const router = require("./network/routes");
+const port = require('./config').PORT;
 
 var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-const port = 3000;
 router(app);
 
 app.use("/app", express.static("public"));
