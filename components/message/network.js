@@ -8,8 +8,8 @@ router.get("/", async (req, res) => {
   try {
     const messageList = await controller.getMessage(filterMessages);
     response.success(req, res, messageList, 200);
-  } catch (error) {
-    response.error(req, res, "Unexpected Error", 500, error);
+  } catch (err) {
+    response.error(req, res, "Unexpected Error", 500, err);
   }
 });
 
@@ -31,30 +31,23 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/", (req, res) => {
-  console.log(req.query);
-  if (req.query.error == "ok") {
-    response.error(
-      req,
-      res,
-      "Error inesperado",
-      500,
-      "Es solo una simulación de los errores"
-    );
-  } else {
-    console.log(req.body);
-    response.success(req, res, "Eliminado correctamente");
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await controller.deleteMessage(id);
+    response.success(req, res, `Mensaje ${id} eliminado`,200);
+  } catch (e) {
+    response.error(req,res, "Error interno", 500, e)
   }
 });
 
 router.patch("/:id", async (req, res) => {
-
-  const {id} = req.params;
-  const {message} = req.body;
+  const { id } = req.params;
+  const { message } = req.body;
   try {
     const data = await controller.updateMessage(id, message);
     response.success(req, res, data, 200);
-  } catch{
+  } catch {
     response.error(req, res, "Error interno", 500, "Error :'(");
   }
 });

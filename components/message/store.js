@@ -1,6 +1,6 @@
 const db = require("mongoose");
 const Model = require("./model");
-const uri = require('../../config').URI_DB;
+const uri = require("../../config").URI_DB;
 
 db.Promise = global.Promise;
 db.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -29,9 +29,13 @@ async function updateMessage(id, message) {
   return newMessage;
 }
 
+async function removeMessage(id) {
+  return await Model.findByIdAndDelete(id);
+}
+
 module.exports = {
   add: addMessage,
   list: getMessage,
   update: updateMessage,
-  //dalete: deleteMEssage
+  remove: removeMessage,
 };

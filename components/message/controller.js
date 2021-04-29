@@ -25,18 +25,6 @@ function getMessage(filterUser) {
 
 function updateMessage(id, message) {
   return new Promise(async (resolve, reject) => {
-    console.log(id);
-    console.log(message);
-    if (!id || !message) {
-      return reject("Invalid data");
-    }
-    const data = await store.update(id, message);
-    resolve(data);
-  });
-}
-
-function updateMessage (id, message) {
-  return new Promise(async (resolve, reject) => {
     if (id && message) {
       try {
         const data = await store.update(id, message);
@@ -48,10 +36,25 @@ function updateMessage (id, message) {
       reject(new Error("Missing params"));
     }
   });
-};
+}
+
+function deleteMessage(id) {
+  return new Promise((resolve, reject) => {
+    if (!id) {
+      return reject("Id invalido");
+    }
+    try {
+      store.remove(id);
+      resolve();
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
 
 module.exports = {
   addMessage,
   getMessage,
   updateMessage,
+  deleteMessage,
 };
