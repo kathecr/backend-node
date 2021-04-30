@@ -1,18 +1,25 @@
 const Model = require("./model");
 
-
 function addMessage(message) {
   const myMessage = new Model(message);
   myMessage.save();
 }
 
 async function getMessage(filterUser) {
-  let filter = {};
-  if (filterUser) {
-    filter = { user: filterUser };
-  }
-  const messages = await Model.find(filter);
-  return messages;
+  return new Promise((resolve, reject) => {
+    let filter = {};
+    if (filterUser) {
+      filter = { user: filterUser };
+    }
+    Model.find(filter)
+      .populate("user")
+      .exec((error, populated) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(populated);
+      });
+  });
 }
 
 async function updateMessage(id, message) {

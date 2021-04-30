@@ -14,11 +14,9 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  const { chat, user, message } = req.body;
   try {
-    const fullMessage = await controller.addMessage(
-      req.body.user,
-      req.body.message
-    );
+    const fullMessage = await controller.addMessage(chat, user, message);
     response.success(req, res, fullMessage, 201);
   } catch {
     response.error(
@@ -35,9 +33,9 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     await controller.deleteMessage(id);
-    response.success(req, res, `Mensaje ${id} eliminado`,200);
+    response.success(req, res, `Mensaje ${id} eliminado`, 200);
   } catch (e) {
-    response.error(req,res, "Error interno", 500, e)
+    response.error(req, res, "Error interno", 500, e);
   }
 });
 
