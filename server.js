@@ -1,18 +1,24 @@
-const express = require("express");
-const router = require("./network/routes");
-const port = require('./config').PORT;
-const db = require('./db')
 const url_db = require("./config").URL_DB;
+const port = require("./config").PORT;
 
-db(url_db)
+const express = require("express");
+const app = express();
 
-var app = express();
+const socket = require("./socket");
+const router = require("./network/routes");
+const db = require("./db");
+const server = require("http").Server(app);
+
+db(url_db);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 router(app);
 
+socket.connect(server);
+
 app.use("/app", express.static("public"));
 
-app.listen(port, () =>
+server.listen(port, () =>
   console.log("La aplicación est escuchando en http://localhost:3000")
 );
