@@ -1,3 +1,5 @@
 /node_modules
 config.js
 /uploads
+/public/node_modules
+/public/.env
