@@ -7,7 +7,7 @@ const controller = require("./controller");
 const router = express.Router();
 
 const storage = multer.diskStorage({
-  destination: "uploads/",
+  destination: "public/files/",
   filename: (req, file, cb) => {
     cb(
       null,
@@ -31,7 +31,12 @@ router.get("/", async (req, res) => {
 router.post("/", upload.single("file"), async (req, res) => {
   const { chat, user, message } = req.body;
   try {
-    const fullMessage = await controller.addMessage(chat, user, message);
+    const fullMessage = await controller.addMessage(
+      chat,
+      user,
+      message,
+      req.file
+    );
     response.success(req, res, fullMessage, 201);
   } catch {
     response.error(

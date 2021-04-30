@@ -7,6 +7,7 @@ const mySchema = new Schema({
   user: { type: Schema.ObjectId, ref: "User" },
   message: { type: String, require: true },
   date: Date,
+  file: String,
 });
 
 const model = mongoose.model("Message", mySchema);
